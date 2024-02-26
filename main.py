@@ -14,11 +14,19 @@ from sqlalchemy.orm import sessionmaker, Session
 from pydantic import BaseModel, Field
 from app import controller as Controller
 from app.bootstrap import ApplicationBootstrap
+from app.database import create_tables, engine, metadata, database
 
-bootstrap = ApplicationBootstrap()
-bootstrap.create_tables()
+metadata.create_all(engine)
+create_tables()
 app = FastAPI()
 
+@app.on_event("startup")
+async def startup():
+    await database.connect()
+
+@app.on_event("shutdown")
+async def shutdown():
+    await database.disconnect()
 
 @app.get("/", tags=["Home"])
 async def redirect():

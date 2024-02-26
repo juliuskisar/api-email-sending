@@ -1,6 +1,7 @@
 from fastapi import APIRouter, UploadFile, Depends
 from fastapi.exceptions import HTTPException
 from fastapi_utils.cbv import cbv
+# from app.database import get_db
 from app.repository import Repository
 from app.service import Service
 from datetime import datetime
@@ -24,7 +25,8 @@ class Controller:
     @router.post("/send_email_to_list")
     async def send_email_to_list(self, document: UploadFile):
         try:
-            response = await self.service.execute(document=document)
-            return response
+            response, total_time = await self.service.execute(document=document)
+            breakpoint()
+            return response, total_time
         except Exception as e:
             raise HTTPException(status_code=400, detail=e)
