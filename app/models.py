@@ -1,3 +1,4 @@
+from pydantic import BaseModel
 from sqlalchemy import Column, Integer, String, DateTime
 from sqlalchemy.orm import relationship
 from datetime import datetime
@@ -5,10 +6,38 @@ from sqlalchemy.ext.declarative import declarative_base
 
 Base = declarative_base()
 
+
+class BilletState(BaseModel):
+    uuid: str
+    email: str
+    amount: str
+    due_date: str
+    code_bar: str
+    created_at: datetime = datetime.now()
+    updated_at: datetime = datetime.now()
+    canceled_at: datetime = None
+
+
+class EmailSentHistoryState(BaseModel):
+    uuid: str
+    email: str
+    name: str
+    billet_uuid: str
+    created_at: datetime = datetime.now()
+    deleted_at: datetime = None
+
+
+class DocumentsReceivedState(BaseModel):
+    process_uuid: str
+    document_name: str
+    number_of_items: int
+    created_at: datetime = datetime.now()
+
 class DocumentsReceived(Base):
     __tablename__ = 'documents_received'
     
     id = Column(Integer, primary_key=True, index=True)
+    process_uuid = Column(String, nullable=False)
     document_name = Column(String, nullable=False)
     number_of_rows = Column(Integer, nullable=False)
     created_at = Column(DateTime, default=datetime.utcnow)
@@ -73,7 +102,7 @@ class Billet(Base):
     @classmethod
     def from_dict(cls, billet_dict):
         return cls(
-            billet_id=billet_dict['billet_id'],
+            id=billet_dict['billet_id'],
             email=billet_dict['email'],
             amount=billet_dict['amount'],
             due_date=billet_dict['due_date'],
@@ -84,7 +113,7 @@ class Billet(Base):
     def to_dict(cls):
         return {
             'id': cls.id,
-            'billet_id': cls.billet_id,
+            'billet_id': cls.id,
             'email': cls.email,
             'amount': cls.amount,
             'due_date': cls.due_date,

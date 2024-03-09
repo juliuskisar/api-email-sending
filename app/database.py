@@ -20,6 +20,7 @@ def create_tables():
 CREATE_TABLE_DOCUMENTS_RECEIVED = """
 CREATE TABLE IF NOT EXISTS documents_received (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
+    process_uuid TEXT NOT NULL,
     document_name TEXT NOT NULL,
     number_of_rows INTEGER NOT NULL,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP

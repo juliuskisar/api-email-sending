@@ -1,4 +1,5 @@
 from __future__ import annotations
+from loguru import logger
 from datetime import datetime, date, time
 import pandas as pd
 from email.message import EmailMessage
@@ -15,6 +16,8 @@ from pydantic import BaseModel, Field
 from app import controller as Controller
 from app.bootstrap import ApplicationBootstrap
 from app.database import create_tables, engine, metadata, database
+
+logger.add("app/logs/file_app.log", rotation="10 MB")
 
 metadata.create_all(engine)
 create_tables()
