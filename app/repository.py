@@ -1,5 +1,3 @@
-from sqlalchemy.orm import Session
-from app.models import Billet, DocumentsReceived, EmailSentHistory
 from datetime import date, datetime
 from app.database import database
 
