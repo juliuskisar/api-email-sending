@@ -22,7 +22,7 @@ class Service:
         logger.info(f'starting process for document {filename}')
         start_time = datetime.now()
         df = pd.read_csv(StringIO(contents))
-        logger.info(f'Cinco primeiros itens do documento {filename} - {df.head(5)}')
+        logger.info(f'Dez primeiros itens do documento {filename} - {df.head(10)}')
         db_documents_received.append(
             DocumentsReceivedState(
                 process_uuid=process_uuid,
